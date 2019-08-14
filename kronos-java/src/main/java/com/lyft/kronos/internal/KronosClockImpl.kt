@@ -5,6 +5,7 @@ import com.lyft.kronos.KronosClock
 import com.lyft.kronos.KronosTime
 import com.lyft.kronos.internal.ntp.SntpService
 
+//why do we have a fallback clock here
 internal class KronosClockImpl(private val ntpService: SntpService, private val fallbackClock: Clock) : KronosClock {
 
     override fun sync() = ntpService.sync()

@@ -5,13 +5,11 @@ import com.lyft.kronos.DefaultParam.TIMEOUT_MS
 import com.lyft.kronos.SyncListener
 import com.nhaarman.mockito_kotlin.*
 import org.assertj.core.api.Assertions.*
+import org.junit.Before
 import org.junit.Test
 import java.io.IOException
-import java.lang.IllegalArgumentException
 
 class SntpServiceTest {
-    private val sntpService : SntpService
-
     private val sntpClient = mock<SntpClient>()
     private val deviceClock = mock<Clock>()
     private val responseCache = mock<SntpResponseCache>()
@@ -19,9 +17,11 @@ class SntpServiceTest {
     private val mockResponse = mock<SntpClient.Response>()
     private val ntpHosts = listOf("2.us.pool.ntp.org", "1.us.pool.ntp.org", "0.us.pool.ntp.org")
 
-    init {
-        whenever(deviceClock.getElapsedTimeMs()).then({ System.currentTimeMillis() })
-        sntpService = SntpServiceImpl(sntpClient, deviceClock, responseCache, sntpSyncListener, ntpHosts)
+    private val sntpService = SntpServiceImpl(sntpClient, deviceClock, responseCache, sntpSyncListener, ntpHosts)
+
+    @Before
+    fun setUp() {
+        whenever(deviceClock.getElapsedTimeMs()).then { System.currentTimeMillis() }
     }
 
     @Test
